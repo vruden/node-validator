@@ -1,0 +1,22 @@
+{
+  "name": "node-validator",
+  "description": "",
+  "version": "0.0.1",
+  "private": false,
+  "engines": {
+    "node": ">=5.7.0",
+    "npm": ">=3.6.0"
+  },
+  "scripts": {
+    "test": "mocha test"
+  },
+  "dependencies": {
+    "node-errors": "https://github.com/vruden/node-errors.git#v0.0.1",
+    "lodash": "^3.10.0",
+    "underscore.string": "3.2.3"
+  },
+  "devDependencies": {
+    "mysql": "~2.5.5"
+
+  }
+}
