@@ -1,7 +1,7 @@
 var assert = require('assert');
 var _ = require('lodash');
 var _String = require('underscore.string');
-var ValidatorSync = require('../lib/validatorSync');
+var ValidatorSync = require('../lib/validator');
 
 describe('Validator', function () {
     describe('#wrong rule', function () {
@@ -16,7 +16,7 @@ describe('Validator', function () {
                         [['role_id', 'first_name']]
                     ], data)
                 },
-                /Rule should contain at least 2 arguments:role_id,first_name/
+                /Error: Rule should contain at least 2 arguments: role_id,first_name/
             );
         });
     });
@@ -602,6 +602,17 @@ describe('Validator', function () {
             function isCorrectDate () {
                 return false;
             }
+
+            var result = { group: [ 'Group cannot be blank.' ],
+                login: [ 'Login should contain at least 4 characters.' ],
+                password: [ 'Password should contain at least 8 characters.' ],
+                age: [ '"Возраст" must be greater or equal to 18.' ],
+                date: [ 'Date is invalid' ]
+            };
+
+            console.log(data)
+
+            assert.deepEqual(result, errors);
         });
     });
 

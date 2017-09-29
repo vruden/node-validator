@@ -1,22 +1,46 @@
 {
-  "name": "node-validator",
-  "description": "",
-  "version": "0.0.1",
-  "private": false,
+  "name": "validator-list",
+  "description": "Validator",
+  "version": "0.0.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vruden/node-validator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vruden/node-validator/issues"
+  },
+  "homepage": "https://github.com/vruden/node-validator",
+  "author": {
+    "name": "Vladimir Rudenko",
+    "email": "ruden.v.a@gmail.com"
+  },
+  "license": "MIT",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "engines": {
-    "node": ">=5.7.0",
-    "npm": ">=3.6.0"
+    "node": ">=8.5.0",
+    "npm": ">=5.3.0"
   },
   "scripts": {
+    "prepublish": "npm run build",
+    "build": "npm run clean && npm run build-ts && npm run tslint",
+    "clean": "rm -rf lib",
+    "build-ts": "tsc",
+    "watch-ts": "tsc -w",
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
     "test": "mocha test"
   },
   "dependencies": {
-    "node-errors": "https://github.com/vruden/node-errors.git#v0.0.1",
-    "lodash": "^3.10.0",
-    "underscore.string": "3.2.3"
+    "error-list": "0.0.4",
+    "lodash": "^4.17.4",
+    "underscore.string": "^3.2.3"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.76",
     "mysql": "~2.5.5"
-
-  }
+  },
+  "keywords": [
+    "node",
+    "validator"
+  ]
 }
