@@ -28,9 +28,7 @@ export class BaseValidator extends AbstractValidator implements IBaseValidator {
 
             options = _.pick(options, this.getOptionNameList());
 
-            _.forOwn(options, (value, key) => {
-                this[key] = value;
-            });
+            Object.assign(this, options);
         }
     }
 
