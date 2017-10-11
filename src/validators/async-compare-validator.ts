@@ -1,8 +1,8 @@
 import * as _ from 'lodash';
 import { BaseCompareValidator } from './base-compare-validator';
 
-export class CompareValidator extends BaseCompareValidator {
-    validate(): string | boolean {
+export class AsyncCompareValidator extends BaseCompareValidator {
+    async validate(): Promise<string | boolean> {
         if (!this.isAvailableForValidation()) {
             return false;
         }
@@ -10,7 +10,7 @@ export class CompareValidator extends BaseCompareValidator {
         let compareValue = this.compareValue;
 
         if (_.isFunction(this.compareValue)) {
-            compareValue = this.compareValue();
+            compareValue = await this.compareValue();
         }
 
         if (!this.copmare(compareValue)) {

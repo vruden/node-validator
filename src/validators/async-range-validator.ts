@@ -1,24 +1,27 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const _ = require("lodash");
-const base_range_validator_1 = require("./base-range-validator");
-class RangeValidator extends base_range_validator_1.BaseRangeValidator {
-    validate() {
+import * as _ from 'lodash';
+import { BaseRangeValidator } from './base-range-validator';
+
+export class AsyncRangeValidator extends BaseRangeValidator {
+    async validate(): Promise<string | boolean> {
         if (!this.isAvailableForValidation()) {
             return false;
         }
+
         let range = this.range;
+
         if (_.isFunction(this.range)) {
-            range = this.range(this.value);
+            range = await this.range(this.value);
+
             if (!_.isArray(range)) {
                 throw new Error('The `range` property is not array.');
             }
         }
+
         let result = false;
+
         if (this.strict) {
             result = _.indexOf(range, this.value) !== -1;
-        }
-        else {
+        } else {
             for (const i of range) {
                 if (this.value == i) {
                     result = true;
@@ -26,11 +29,13 @@ class RangeValidator extends base_range_validator_1.BaseRangeValidator {
                 }
             }
         }
+
         result = this.not ? !result : result;
+
         if (!result) {
             return this.message.replace('{attribute}', this.attributeLabel).replace('{range}', range.join(', '));
         }
+
         return false;
     }
 }
-exports.RangeValidator = RangeValidator;

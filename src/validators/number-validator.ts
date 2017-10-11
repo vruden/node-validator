@@ -11,7 +11,7 @@ export interface INumberValidatorOptions extends IBaseValidatorOptions {
 
 export class NumberValidator extends BaseValidator {
     integerMessage: string = '{attribute} must be an integer.';
-    numberMessage: string = '{attribute} must be an number.';
+    numberMessage: string = '{attribute} must be a number.';
     tooSmall: string = '{attribute} must be no less than {min}.';
     tooBig: string = '{attribute} must be no greater than {max}.';
     integerOnly: boolean = false;

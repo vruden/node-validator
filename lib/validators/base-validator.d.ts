@@ -4,7 +4,7 @@ export interface IBaseValidatorOptions {
     skipOnEmpty?: boolean;
 }
 export interface IBaseValidator {
-    validate(): boolean | string;
+    validate(): boolean | string | Promise<boolean | string>;
 }
 export declare class BaseValidator extends AbstractValidator implements IBaseValidator {
     protected attributeLabel: string;
@@ -15,7 +15,7 @@ export declare class BaseValidator extends AbstractValidator implements IBaseVal
     protected getOptionNameList(...childrenList: string[][]): string[];
     protected setOptions(options: any): void;
     isAvailableForValidation(): boolean;
-    validate(): boolean | string;
+    validate(): boolean | string | Promise<boolean | string>;
     static isEmptyValue(value: any): boolean;
-    static validateValue(value: any, variableName?: any, options?: any): boolean | string;
+    static validateValue(value: any, variableName?: any, options?: any): any;
 }

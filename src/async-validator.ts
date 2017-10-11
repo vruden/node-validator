@@ -2,15 +2,15 @@ import * as _ from 'lodash';
 import * as _String from 'underscore.string';
 import { ValidationError } from 'error-list';
 import { AbstractValidator } from './validators/abstract-validator';
-import { FilterValidator } from './validators/filter-validator';
-import { DefaultValueValidator } from './validators/default-value-validator';
+import { AsyncFilterValidator } from './validators/async-filter-validator';
+import { AsyncDefaultValueValidator } from './validators/async-default-value-validator';
 import { RequiredValidator } from './validators/required-validator';
 import { ArrayValidator } from './validators/array-validator';
 import { BooleanValidator } from './validators/boolean-validator';
-import { CompareValidator } from './validators/compare-validator';
+import { AsyncCompareValidator } from './validators/async-compare-validator';
 import { NumberValidator } from './validators/number-validator';
 import { EmailValidator } from './validators/email-validator';
-import { RangeValidator } from './validators/range-validator';
+import { AsyncRangeValidator } from './validators/async-range-validator';
 import { RegularExpressionValidator } from './validators/regular-expression-validator';
 import { StringValidator } from './validators/string-validator';
 import { BaseValidator } from './validators/base-validator';
@@ -48,13 +48,13 @@ class Validator {
     }
 
     defaultValidators = {
-        filter: FilterValidator,
-        default: DefaultValueValidator,
+        filter: AsyncFilterValidator,
+        default: AsyncDefaultValueValidator,
         required: RequiredValidator,
 
         array: ArrayValidator,
         boolean: BooleanValidator,
-        compare: CompareValidator,
+        compare: AsyncCompareValidator,
         double: NumberValidator,
         email: EmailValidator,
         id: {
@@ -65,7 +65,7 @@ class Validator {
                 tooSmall: '{attribute} must be correct id.'
             }
         },
-        in: RangeValidator,
+        in: AsyncRangeValidator,
         integer: {
             class: NumberValidator,
             options: {
@@ -77,7 +77,7 @@ class Validator {
         string: StringValidator
     };
 
-    validate() {
+    async validate() {
         for (const rule of this.rules) {
             const attributes = _.isArray(rule[0]) ? rule[0] : [rule[0]];
             const validator = rule[1];
@@ -86,8 +86,8 @@ class Validator {
 
             if (_.isFunction(validator)) {
                 for (const attribute of attributes) {
-                    if (this.isAvailableForValidation(this.data[attribute], attribute, options)) {
-                        const error = validator(this.data[attribute], this.getAttributeLabel(attribute, options.lowercaseLabel), options);
+                    if (await this.isAvailableForValidation(this.data[attribute], attribute, options)) {
+                        const error = await validator(this.data[attribute], this.getAttributeLabel(attribute, options.lowercaseLabel), options);
 
                         if (error) {
                             this.addError(attribute, error);
@@ -99,19 +99,19 @@ class Validator {
                     for (const attribute of attributes) {
                         const attributeLabel = this.getAttributeLabel(attribute, options.lowercaseLabel);
 
-                        if (_.isFunction(options.skip) && options.skip(this.data[attribute], attributeLabel, options)) {
+                        if (_.isFunction(options.skip) && await options.skip(this.data[attribute], attributeLabel, options)) {
                             continue;
                         }
 
                         if (_.has(this.data, attribute)) {
-                            this.data[attribute] = FilterValidator.validate(options.filter, this.data[attribute]);
+                            this.data[attribute] = await AsyncFilterValidator.validate(options.filter, this.data[attribute]);
                         }
                     }
                 } else if (validator === 'required') {
                     for (const attribute of attributes) {
                         const attributeLabel = this.getAttributeLabel(attribute, options.lowercaseLabel);
 
-                        if (_.isFunction(options.skip) && options.skip(this.data[attribute], attributeLabel, options)) {
+                        if (_.isFunction(options.skip) && await options.skip(this.data[attribute], attributeLabel, options)) {
                             continue;
                         }
 
@@ -124,12 +124,12 @@ class Validator {
                     }
                 } else if (validator === 'default') {
                     for (const attribute of attributes) {
-                        if (_.isFunction(options.skip) && options.skip(this.data[attribute], this.getAttributeLabel(attribute, options.lowercaseLabel), options)) {
+                        if (_.isFunction(options.skip) && await options.skip(this.data[attribute], this.getAttributeLabel(attribute, options.lowercaseLabel), options)) {
                             continue;
                         }
 
                         if (!this.isHasError(attribute)) {
-                            this.data[attribute] = DefaultValueValidator.validate(this.data[attribute], options.value);
+                            this.data[attribute] = await AsyncDefaultValueValidator.validate(this.data[attribute], options.value);
                         }
                     }
                 } else {
@@ -141,8 +141,8 @@ class Validator {
                     }
 
                     for (const attribute of attributes) {
-                        if (this.isAvailableForValidation(this.data[attribute], attribute, options)) {
-                            const error = new validatorClass(this.getAttributeLabel(attribute, options.lowercaseLabel), this.data[attribute], options).validate();
+                        if (await this.isAvailableForValidation(this.data[attribute], attribute, options)) {
+                            const error = await new validatorClass(this.getAttributeLabel(attribute, options.lowercaseLabel), this.data[attribute], options).validate();
 
                             if (error) {
                                 this.addError(attribute, error);
@@ -168,8 +168,8 @@ class Validator {
         this.errors[attribute].push(error);
     }
 
-    isAvailableForValidation(value, attribute, options) {
-        if (_.isFunction(options.skip) && options.skip(value, this.getAttributeLabel(attribute, options.lowercaseLabel), options)) {
+    async isAvailableForValidation(value, attribute, options) {
+        if (_.isFunction(options.skip) && await options.skip(value, this.getAttributeLabel(attribute, options.lowercaseLabel), options)) {
             return false;
         }
 
@@ -199,6 +199,6 @@ class Validator {
     }
 }
 
-export const validate = function (rules, data, attributeLabels?, mixin?) {
-    return new Validator(rules, data, attributeLabels, mixin).validate();
+export const validate = async function (rules, data, attributeLabels?, mixin?): Promise<any> {
+    return await new Validator(rules, data, attributeLabels, mixin).validate();
 };

@@ -28,7 +28,7 @@ export class StringValidator extends BaseValidator {
         // console.log(options.length)
 
         if (_.isArray(this.length)) {
-            if (length[0]) {
+            if (this.length[0]) {
                 this.min = this.length[0];
             }
 

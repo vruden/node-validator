@@ -7,12 +7,12 @@ export interface IBaseValidatorOptions {
 }
 
 export interface IBaseValidator {
-    validate(): boolean | string;
+    validate(): boolean | string | Promise<boolean | string>;
 }
 
 export class BaseValidator extends AbstractValidator implements IBaseValidator {
     public message: string;
-    public skipOnEmpty: boolean = false;
+    public skipOnEmpty: boolean = true;
 
     constructor(protected attributeLabel: string, protected value, options?: IBaseValidatorOptions) {
         super();
@@ -40,18 +40,19 @@ export class BaseValidator extends AbstractValidator implements IBaseValidator {
         return true;
     }
 
-    validate(): boolean | string {
+    validate(): boolean | string | Promise<boolean | string> {
         return false;
     }
 
     static isEmptyValue(value): boolean {
-        const isEmptyString = _.isString(value) && _.isEmpty(value);
+        const isEmptyString = _.isString(value) && value.length === 0;
         const isEmptyArray = _.isArray(value) && _.isEmpty(value);
+        const isEmptyObject = _.isPlainObject(value) && _.isEmpty(value);
 
-        return _.isNil(value) || isEmptyString || isEmptyArray;
+        return _.isNil(value) || isEmptyString || isEmptyArray || isEmptyObject;
     }
 
-    static validateValue(value, variableName?, options?): boolean | string {
+    static validateValue(value, variableName?, options?): any {
         let _variableName = 'Variable';
         let _options = options || {};
 
