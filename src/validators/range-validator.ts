@@ -1,43 +1,28 @@
 import * as _ from 'lodash';
-import { BaseValidator, IBaseValidatorOptions } from './base-validator';
+import { BaseRangeValidator } from './base-range-validator';
 
-export interface IRangeValidatorOptions extends IBaseValidatorOptions {
-    range;
-    strict: boolean;
-    not: boolean;
-}
-
-export class RangeValidator extends BaseValidator {
-    message: string = '{attribute} is invalid.';
-    range: any[];
-    strict: boolean = false;
-    not: boolean = false;
-
-    constructor(attributeLabel: string, value, options?: IRangeValidatorOptions) {
-        super(attributeLabel, value, options);
-
-        this.setOptions(options);
-
-        if (!_.isArray(this.range) || _.isEmpty(this.range)) {
-            throw new Error('The `range` property must be set.');
-        }
-    }
-
-    protected getOptionNameList(...childrenList): string[] {
-        return super.getOptionNameList(...childrenList, ['range', 'strict', 'not']);
-    }
-
+export class RangeValidator extends BaseRangeValidator {
     validate(): string | boolean {
         if (!this.isAvailableForValidation()) {
             return false;
         }
 
+        let range = this.range;
+
+        if (_.isFunction(this.range)) {
+            range = this.range(this.value);
+
+            if (!_.isArray(range)) {
+                throw new Error('The `range` property is not array.');
+            }
+        }
+
         let result = false;
 
         if (this.strict) {
-            result = _.indexOf(this.range, this.value) !== -1;
+            result = _.indexOf(range, this.value) !== -1;
         } else {
-            for (const i of this.range) {
+            for (const i of range) {
                 if (this.value == i) {
                     result = true;
                     break;
@@ -48,7 +33,7 @@ export class RangeValidator extends BaseValidator {
         result = this.not ? !result : result;
 
         if (!result) {
-            return this.message.replace('{attribute}', this.attributeLabel);
+            return this.message.replace('{attribute}', this.attributeLabel).replace('{range}', range.join(', '));
         }
 
         return false;

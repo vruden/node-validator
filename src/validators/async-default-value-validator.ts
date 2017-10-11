@@ -1,10 +1,10 @@
 import * as _ from 'lodash';
 import { AbstractValidator } from './abstract-validator';
 
-export class DefaultValueValidator extends AbstractValidator {
-    static validate(value, defaultValue): any {
+export class AsyncDefaultValueValidator extends AbstractValidator {
+    static async validate(value, defaultValue): Promise<any> {
         if (this.isEmpty(value)) {
-            return _.isFunction(defaultValue) ? defaultValue() : defaultValue;
+            return _.isFunction(defaultValue) ? await defaultValue() : defaultValue;
         }
 
         return value;

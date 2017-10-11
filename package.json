@@ -1,7 +1,7 @@
 {
   "name": "validator-list",
   "description": "Validator",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "repository": {
     "type": "git",
     "url": "https://github.com/vruden/node-validator.git"
@@ -31,7 +31,7 @@
     "test": "mocha test"
   },
   "dependencies": {
-    "error-list": "^0.0.5",
+    "error-list": "^0.0.6",
     "lodash": "^4.17.4",
     "underscore.string": "^3.2.3"
   },
