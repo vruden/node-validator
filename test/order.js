@@ -44,7 +44,8 @@ describe('order', function () {
         };
 
         const rules = [
-            [['login', 'name', 'age', 'password', 'group'], 'required'],
+            [['login'], 'required', {strict: true}],
+            [['name', 'age', 'password', 'group'], 'required'],
             [['login', 'name'], 'filter', {filter: _String.trim}],
             [['login', 'name'], 'string', {min: 4}],
             ['password', 'string', {min: 8}],

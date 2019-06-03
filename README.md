@@ -150,12 +150,19 @@
     
 ## Required
 ```js
-    var data = {
-        first_name: 'Tom'
+    const data = {
+        first_name: 'Tom',
+        age: null,
+        second_name: null,
+        range1: [],
+        range2: [],
+        string1: '   ',
+        string2: '   '
     };
 
     var errors = ValidatorList.validate([
-        [['age', 'first_name', 'second_name'], 'required'],
+        [['age', 'first_name', 'range1', 'string1'], 'required'],
+        [['second_name', 'range2', 'string2'], 'required', {strict: true}],
         [['parents'], 'required', {message: 'Field {attribute} cannot be blank.', lowercaseLabel: true}]
     ], data, {age: 'Возраст'});
     
@@ -165,13 +172,16 @@
         age : [
             'Возраст cannot be blank.'
         ],
-        second_name: [
-            'Second name cannot be blank.'
+        range1: [
+            'Range1 cannot be blank.'
+        ],
+        string1: [
+            'String1 cannot be blank.'
         ],
         parents: [
             'Field parents cannot be blank.'
         ]
-    }
+    };
 ```
 
 ## Array
