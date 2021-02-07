@@ -103,7 +103,8 @@ class Validator {
                             continue;
                         }
 
-                        if (_.has(this.data, attribute)) {
+                        // hasOwnProperty returns false for getters/setters
+                        if (attribute in this.data) {
                             this.data[attribute] = FilterValidator.validate(options.filter, this.data[attribute]);
                         }
                     }
