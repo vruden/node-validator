@@ -9,6 +9,7 @@ describe('string', function () {
         const data = {
             stringA: '123213',
             stringB: '123456',
+            stringB1: '123456',
             stringC: '1234567',
             stringD: '123',
             stringE: '1234',
@@ -24,6 +25,9 @@ describe('string', function () {
             stringB: [
                 'String b should contain at most 4 characters.'
             ],
+            stringB1: [
+                'String b1 too long.'
+            ],
             stringC: [
                 'String c should contain 6 characters.'
             ],
@@ -37,7 +41,8 @@ describe('string', function () {
 
         const rules = [
             [['stringA', 'notString'], 'string'],
-            [['stringB', 'stringC'], 'string', {length: 6}],
+            [['stringC'], 'string', {length: 6}],
+            [['stringB1'], 'string', {max: 4, tooLong: '{attribute} too long.'}],
             [['stringB'], 'string', {length: [2,4]}],
             [['stringD', 'stringE', 'stringF'], 'string', {min: 4, max: 6}],
             [['stringG'], 'string']

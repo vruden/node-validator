@@ -23,7 +23,7 @@ export class StringValidator extends BaseValidator {
         super(attributeLabel, value, options);
 
         // console.log('sttttriiing', options.length)
-        // this.setOptions(options);
+        this.setOptions(options);
 
         // console.log(options.length)
 
