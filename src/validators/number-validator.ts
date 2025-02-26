@@ -18,7 +18,7 @@ export class NumberValidator extends BaseValidator {
     min: number;
     max: number;
 
-    constructor(attributeLabel: string, value, options?: INumberValidatorOptions) {
+    constructor(attributeLabel: string, value: any, options?: INumberValidatorOptions) {
         super(attributeLabel, value, options);
 
         this.setOptions(options);
@@ -28,7 +28,7 @@ export class NumberValidator extends BaseValidator {
         }
     }
 
-    protected getOptionNameList(...childrenList): string[] {
+    protected getOptionNameList(...childrenList: string[][]): string[] {
         return super.getOptionNameList(...childrenList, ['tooSmall', 'tooBig', 'integerOnly', 'min', 'max']);
     }
 
