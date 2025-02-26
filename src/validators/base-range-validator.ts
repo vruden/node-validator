@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { BaseValidator, IBaseValidatorOptions } from './base-validator';
 
 export interface IBaseRangeValidatorOptions extends IBaseValidatorOptions {
-    range: any;
+    range;
     strict: boolean;
     not: boolean;
 }
@@ -13,7 +13,7 @@ export class BaseRangeValidator extends BaseValidator {
     strict: boolean = false;
     not: boolean = false;
 
-    constructor(attributeLabel: string, value: any, options?: IBaseRangeValidatorOptions) {
+    constructor(attributeLabel: string, value, options?: IBaseRangeValidatorOptions) {
         super(attributeLabel, value, options);
 
         this.setOptions(options);
@@ -23,7 +23,7 @@ export class BaseRangeValidator extends BaseValidator {
         }
     }
 
-    protected getOptionNameList(...childrenList: string[][]): string[] {
+    protected getOptionNameList(...childrenList): string[] {
         return super.getOptionNameList(...childrenList, ['range', 'strict', 'not']);
     }
 }
