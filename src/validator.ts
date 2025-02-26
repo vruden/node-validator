@@ -1,6 +1,5 @@
 import * as _ from 'lodash';
 import * as _String from 'underscore.string';
-import { ValidationError } from 'error-list';
 import { AbstractValidator } from './validators/abstract-validator';
 import { FilterValidator } from './validators/filter-validator';
 import { DefaultValueValidator } from './validators/default-value-validator';
@@ -15,12 +14,16 @@ import { RegularExpressionValidator } from './validators/regular-expression-vali
 import { StringValidator } from './validators/string-validator';
 import { BaseValidator } from './validators/base-validator';
 
-
 class Validator {
     errors: any = {};
     requireErrors: string[] = [];
 
-    constructor(public rules, public data, public attributeLabels = {}, public mixin = {}) {
+    constructor(
+        public rules: any,
+        public data: any,
+        public attributeLabels = {},
+        public mixin = {}
+    ) {
         for (const rule of this.rules) {
             if (rule.length < 2) {
                 throw new Error(`Rule should contain at least 2 arguments: ${rule}`);
@@ -33,15 +36,16 @@ class Validator {
             }
         }
 
+        // eslint-disable-next-line func-names
         this.rules = _.sortBy(this.rules, function (rule) {
             switch (rule[1]) {
                 case 'required':
                     return 1;
-                case 'filter' :
+                case 'filter':
                     return 2;
                 case 'default':
                     return 4;
-                default :
+                default:
                     return 3;
             }
         });
@@ -87,7 +91,11 @@ class Validator {
             if (_.isFunction(validator)) {
                 for (const attribute of attributes) {
                     if (this.isAvailableForValidation(this.data[attribute], attribute, options)) {
-                        const error = validator(this.data[attribute], this.getAttributeLabel(attribute, options.lowercaseLabel), options);
+                        const error = validator(
+                            this.data[attribute],
+                            this.getAttributeLabel(attribute, options.lowercaseLabel),
+                            options
+                        );
 
                         if (error) {
                             this.addError(attribute, error);
@@ -125,7 +133,14 @@ class Validator {
                     }
                 } else if (validator === 'default') {
                     for (const attribute of attributes) {
-                        if (_.isFunction(options.skip) && options.skip(this.data[attribute], this.getAttributeLabel(attribute, options.lowercaseLabel), options)) {
+                        if (
+                            _.isFunction(options.skip) &&
+                            options.skip(
+                                this.data[attribute],
+                                this.getAttributeLabel(attribute, options.lowercaseLabel),
+                                options
+                            )
+                        ) {
                             continue;
                         }
 
@@ -134,7 +149,7 @@ class Validator {
                         }
                     }
                 } else {
-                    let validatorClass = this.defaultValidators[validator];
+                    let validatorClass = (<any>this.defaultValidators)[validator];
 
                     if (!AbstractValidator.isPrototypeOf(validatorClass)) {
                         options = _.extend(options, validatorClass.options);
@@ -143,7 +158,12 @@ class Validator {
 
                     for (const attribute of attributes) {
                         if (this.isAvailableForValidation(this.data[attribute], attribute, options)) {
-                            const error = new validatorClass(this.getAttributeLabel(attribute, options.lowercaseLabel), this.data[attribute], options).validate();
+                            // eslint-disable-next-line new-cap
+                            const error = new validatorClass(
+                                this.getAttributeLabel(attribute, options.lowercaseLabel),
+                                this.data[attribute],
+                                options
+                            ).validate();
 
                             if (error) {
                                 this.addError(attribute, error);
@@ -157,11 +177,11 @@ class Validator {
         return _.size(this.errors) ? this.errors : undefined;
     }
 
-    isHasError(attribute) {
+    isHasError(attribute: any) {
         return _.has(this.errors, attribute);
     }
 
-    addError(attribute, error) {
+    addError(attribute: any, error: any) {
         if (!this.errors[attribute]) {
             this.errors[attribute] = [];
         }
@@ -169,8 +189,11 @@ class Validator {
         this.errors[attribute].push(error);
     }
 
-    isAvailableForValidation(value, attribute, options) {
-        if (_.isFunction(options.skip) && options.skip(value, this.getAttributeLabel(attribute, options.lowercaseLabel), options)) {
+    isAvailableForValidation(value: any, attribute: any, options: any) {
+        if (
+            _.isFunction(options.skip) &&
+            options.skip(value, this.getAttributeLabel(attribute, options.lowercaseLabel), options)
+        ) {
             return false;
         }
 
@@ -189,8 +212,11 @@ class Validator {
         return true;
     }
 
-    getAttributeLabel(attribute, lowercase) {
-        let label = !_.isUndefined(this.attributeLabels) && !_.isUndefined(this.attributeLabels[attribute]) ? this.attributeLabels[attribute] : attribute;
+    getAttributeLabel(attribute: any, lowercase: any) {
+        let label =
+            !_.isUndefined(this.attributeLabels) && !_.isUndefined((<any>this.attributeLabels)[attribute])
+                ? (<any>this.attributeLabels)[attribute]
+                : attribute;
         label = _String.humanize(label);
 
         return lowercase ? _String.decapitalize(label) : label;
@@ -200,6 +226,7 @@ class Validator {
     }
 }
 
-export const validate = function (rules, data, attributeLabels?, mixin?) {
+// eslint-disable-next-line func-names
+export const validate = function (rules: any, data: any, attributeLabels?: any, mixin?: any) {
     return new Validator(rules, data, attributeLabels, mixin).validate();
 };

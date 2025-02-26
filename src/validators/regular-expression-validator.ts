@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 import { BaseValidator, IBaseValidatorOptions } from './base-validator';
 
 export interface IRegularExpressionValidatorOptions extends IBaseValidatorOptions {
-    pattern;
+    pattern: RegExp;
     not: boolean;
 }
 
@@ -11,7 +11,7 @@ export class RegularExpressionValidator extends BaseValidator {
     pattern;
     not: boolean = false;
 
-    constructor(attributeLabel: string, value, options?: IRegularExpressionValidatorOptions) {
+    constructor(attributeLabel: string, value: any, options?: IRegularExpressionValidatorOptions) {
         super(attributeLabel, value, options);
 
         this.setOptions(options);
@@ -21,7 +21,7 @@ export class RegularExpressionValidator extends BaseValidator {
         }
     }
 
-    protected getOptionNameList(...childrenList): string[] {
+    protected getOptionNameList(...childrenList: string[][]): string[] {
         return super.getOptionNameList(...childrenList, ['pattern', 'not']);
     }
 
@@ -30,7 +30,8 @@ export class RegularExpressionValidator extends BaseValidator {
             return false;
         }
 
-        let result = this.pattern.test(this.value);
+        let result = (<any>this.pattern).test(this.value);
+
         if (this.not) {
             result = !result;
         }

@@ -16,6 +16,6 @@ export declare class StringValidator extends BaseValidator {
     min?: number;
     max?: number;
     constructor(attributeLabel: string, value: any, options?: IStringValidatorOprions);
-    protected getOptionNameList(...childrenList: any[]): string[];
+    protected getOptionNameList(...childrenList: string[][]): string[];
     validate(): string | boolean;
 }

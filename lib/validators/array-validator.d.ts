@@ -12,7 +12,7 @@ export declare class ArrayValidator extends BaseValidator {
     notEmpty: boolean;
     type: string;
     constructor(attributeLabel: string, value: any, options?: IArrayValidatorOptions);
-    protected getOptionNameList(...childrenList: any[]): string[];
+    protected getOptionNameList(...childrenList: string[][]): string[];
     validate(): string | boolean;
     isInteger(value: any): boolean;
     isId(value: any): boolean;

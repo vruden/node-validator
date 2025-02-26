@@ -1,4 +1,3 @@
-import * as _ from 'lodash';
 import { BaseValidator, IBaseValidatorOptions } from './base-validator';
 
 export interface IBooleanValidatorOptions extends IBaseValidatorOptions {
@@ -9,13 +8,13 @@ export class BooleanValidator extends BaseValidator {
     message: string = '{attribute} is not boolean.';
     strict: boolean = false;
 
-    constructor(attributeLabel: string, value, options?: IBooleanValidatorOptions) {
+    constructor(attributeLabel: string, value: any, options?: IBooleanValidatorOptions) {
         super(attributeLabel, value, options);
 
         this.setOptions(options);
     }
 
-    protected getOptionNameList(...childrenList): string[] {
+    protected getOptionNameList(...childrenList: string[][]): string[] {
         return super.getOptionNameList(...childrenList, ['strict']);
     }
 
@@ -29,6 +28,7 @@ export class BooleanValidator extends BaseValidator {
         if (this.strict) {
             result = this.value === true || this.value === false;
         } else {
+            // eslint-disable-next-line eqeqeq
             result = this.value == true || this.value == false;
         }
 
