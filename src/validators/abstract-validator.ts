@@ -1,1 +1,2 @@
-export abstract class AbstractValidator {}
+export abstract class AbstractValidator {
+}

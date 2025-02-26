@@ -1,99 +1,65 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Compiled binary addons (http://nodejs.org/api/addons.html)
-build/Release
-
-# Dependency directories
-node_modules/
-bower_components/
-jspm_packages/
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# dotenv environment variables file
-.env
-.env.test
-
-# IntelliJ data
-.idea
-
-# VSCode
-.vscode
-
-# Compiled project files
-dist/*
-lib/*
-
-# SSL Certificates
-certificates/*
-!certificates/.gitkeep
-
-# MacOS DS_Store files
+# OS
+# ===========
 .DS_Store
+ehthumbs.db
+Icon?
+Thumbs.db
 
-# Allure test reports
-allure-results/
-allure-report/
+# Node and related ecosystem
+# ==========================
+.nodemonignore
+.sass-cache/
+node_modules/
+public/lib
+app/tests/coverage/
+.bower-*/
+.idea/
+coverage/
 
-# Reports
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+.migration/
 
-# Cache
-.cache
-.rpt2_cache
-.rts2_cache_cjs
-.rts2_cache_es
-.rts2_cache_umd
+# General
+# =======
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+*.tmp
+*.bak
+*.swp
+logs/
+build/
 
-# Vue
-.nuxt
-.vuepress/dist
+# Sublime editor
+# ==============
+.sublime-project
+*.sublime-project
+*.sublime-workspace
 
-# Next
-.next
+# Eclipse project files
+# =====================
+.project
+.settings/
+.*.md.html
+.metadata
+*~.nib
+local.properties
 
-# Configs
-config.local.ts
-src/config/local/
-src/config/local*.ts
+# IntelliJ
+# ========
+*.iml
 
-# Grunt
-.grunt
+# Cloud9 IDE
+# =========
+.c9/
+data/
+mongod
 
-# Common for modules
-*.lcov
-*.tsbuildinfo
-.dynamodb
-.fusebox
-.lock-wscript
-.nyc_output
-.serverless
-.tern-port
-coverage
-lib-cov
-typings
+# Visual Studio
+# =========
+*.suo
+*.ntvs*
+*.njsproj
+*.sln

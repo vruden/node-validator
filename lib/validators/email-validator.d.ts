@@ -3,6 +3,6 @@ export declare class EmailValidator extends BaseValidator {
     pattern: RegExp;
     message: string;
     constructor(attributeLabel: string, value: any, options?: IBaseValidatorOptions);
-    protected getOptionNameList(...childrenList: string[][]): string[];
+    protected getOptionNameList(...childrenList: any[]): string[];
     validate(): string | boolean;
 }

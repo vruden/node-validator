@@ -15,7 +15,7 @@ export declare class NumberValidator extends BaseValidator {
     min: number;
     max: number;
     constructor(attributeLabel: string, value: any, options?: INumberValidatorOptions);
-    protected getOptionNameList(...childrenList: string[][]): string[];
+    protected getOptionNameList(...childrenList: any[]): string[];
     validate(): string | boolean;
     isInteger(value: number): boolean;
 }

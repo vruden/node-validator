@@ -15,13 +15,13 @@ export class ArrayValidator extends BaseValidator {
     notEmpty: boolean = false;
     type: string;
 
-    constructor(attributeLabel: string, value: any, options?: IArrayValidatorOptions) {
+    constructor(attributeLabel: string, value, options?: IArrayValidatorOptions) {
         super(attributeLabel, value, options);
 
         this.setOptions(options);
     }
 
-    protected getOptionNameList(...childrenList: string[][]): string[] {
+    protected getOptionNameList(...childrenList): string[] {
         return super.getOptionNameList(...childrenList, ['emptyMessage', 'typeMessage', 'notEmpty', 'type']);
     }
 
@@ -39,12 +39,11 @@ export class ArrayValidator extends BaseValidator {
         }
 
         if (this.type) {
-            let typeFn;
+            let typeFn = undefined;
 
             if (_.isFunction(this.type)) {
                 typeFn = this.type;
             } else {
-                // eslint-disable-next-line
                 switch (this.type) {
                     case 'string':
                         typeFn = _.isString;
@@ -82,11 +81,11 @@ export class ArrayValidator extends BaseValidator {
         return false;
     }
 
-    isInteger(value: any): boolean {
+    isInteger(value): boolean {
         return _.isNumber(value) && value % 1 === 0;
     }
 
-    isId(value: any): boolean {
+    isId(value): boolean {
         return this.isInteger(value) && value > 0;
     }
 }

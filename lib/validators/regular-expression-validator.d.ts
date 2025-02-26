@@ -1,13 +1,13 @@
 import { BaseValidator, IBaseValidatorOptions } from './base-validator';
 export interface IRegularExpressionValidatorOptions extends IBaseValidatorOptions {
-    pattern: RegExp;
+    pattern: any;
     not: boolean;
 }
 export declare class RegularExpressionValidator extends BaseValidator {
     message: string;
-    pattern: never;
+    pattern: any;
     not: boolean;
     constructor(attributeLabel: string, value: any, options?: IRegularExpressionValidatorOptions);
-    protected getOptionNameList(...childrenList: string[][]): string[];
+    protected getOptionNameList(...childrenList: any[]): string[];
     validate(): string | boolean;
 }

@@ -14,11 +14,7 @@ export class BaseValidator extends AbstractValidator implements IBaseValidator {
     public message: string;
     public skipOnEmpty: boolean = true;
 
-    constructor(
-        protected attributeLabel: string,
-        protected value: any,
-        options?: IBaseValidatorOptions
-    ) {
+    constructor(protected attributeLabel: string, protected value, options?: IBaseValidatorOptions) {
         super();
         this.setOptions(options);
     }
@@ -27,8 +23,9 @@ export class BaseValidator extends AbstractValidator implements IBaseValidator {
         return _.uniq(_.union(_.flatten(childrenList), ['message', 'skipOnEmpty']));
     }
 
-    protected setOptions(options: any) {
+    protected setOptions(options) {
         if (options) {
+
             options = _.pick(options, this.getOptionNameList());
 
             Object.assign(this, options);
@@ -47,7 +44,7 @@ export class BaseValidator extends AbstractValidator implements IBaseValidator {
         return false;
     }
 
-    static isEmptyValue(value: any): boolean {
+    static isEmptyValue(value): boolean {
         const isEmptyString = _.isString(value) && value.length === 0;
         const isEmptyArray = _.isArray(value) && _.isEmpty(value);
         const isEmptyObject = _.isPlainObject(value) && _.isEmpty(value);
@@ -55,7 +52,7 @@ export class BaseValidator extends AbstractValidator implements IBaseValidator {
         return _.isNil(value) || isEmptyString || isEmptyArray || isEmptyObject;
     }
 
-    static validateValue(value: any, variableName?: any, options?: any): any {
+    static validateValue(value, variableName?, options?): any {
         let _variableName = 'Variable';
         let _options = options || {};
 

@@ -23,7 +23,6 @@ export class AsyncRangeValidator extends BaseRangeValidator {
             result = _.indexOf(range, this.value) !== -1;
         } else {
             for (const i of range) {
-                // eslint-disable-next-line eqeqeq
                 if (this.value == i) {
                     result = true;
                     break;
